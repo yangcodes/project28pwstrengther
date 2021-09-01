@@ -24,6 +24,9 @@ function calculatePasswordStrength(password) {
   assessment.push(lengthAssessment(password));
   assessment.push(lowercaseAssessment(password));
   assessment.push(uppercaseAssessment(password));
+  assessment.push(numberAssessment(password));
+  assessment.push(specialCharacterAssessment(password));
+  assessment.push(repeatCharacterAssessment(password));
   return assessment;
 }
 
@@ -55,6 +58,19 @@ function uppercaseAssessment(password) {
   return characterTypeAssessment(password, /[A-Z]/g, "uppercase characters");
 }
 
+//numberAssessment function
+function numberAssessment(password) {
+  return characterTypeAssessment(password, /[0-9]/g, "numbers");
+}
+//specialCharacterAssessment function
+function specialCharacterAssessment(password) {
+  return characterTypeAssessment(
+    password,
+    /[^0-9a-zA-Z\s]/g,
+    "special characters"
+  );
+}
+
 //character type assessment function
 function characterTypeAssessment(password, regX, assessmentType) {
   const characterMatch = password.match(regX) || [];
@@ -70,6 +86,17 @@ function characterTypeAssessment(password, regX, assessmentType) {
     return {
       pwdCheck: `Password must have more ${assessmentType}`,
       strengthLost: 5,
+    };
+  }
+}
+
+function repeatCharacterAssessment(password) {
+  const repeatCharMatch = password.match(/(.)\1/g) || [];
+
+  if (repeatCharMatch.length > 0) {
+    return {
+      pwdCheck: "Passwprd has repeated characters",
+      strengthLost: repeatCharMatch.length * 10,
     };
   }
 }
