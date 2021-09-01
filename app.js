@@ -47,38 +47,29 @@ function lengthAssessment(password) {
 
 //lowercaseAssessment function
 function lowercaseAssessment(password) {
-  const characterMatch = password.match(/[a-z]/g) || [];
-  console.log(characterMatch);
-
-  if (characterMatch.length === 0) {
-    return {
-      pwdCheck: "Password has no lowercase characters",
-      strengthLost: 20,
-    };
-  }
-  if (characterMatch.length <= 2) {
-    return {
-      pwdCheck: "Password must have more lowercase characters",
-      strengthLost: 15,
-    };
-  }
+  return characterTypeAssessment(password, /[a-z]/g, "lowercase characters");
 }
 
 //uppercaseAssessment function
 function uppercaseAssessment(password) {
-  const characterMatch = password.match(/[A-Z]/g) || [];
+  return characterTypeAssessment(password, /[A-Z]/g, "uppercase characters");
+}
+
+//character type assessment function
+function characterTypeAssessment(password, regX, assessmentType) {
+  const characterMatch = password.match(regX) || [];
   console.log(characterMatch);
 
   if (characterMatch.length === 0) {
     return {
-      pwdCheck: "Password has no uppercase characters",
+      pwdCheck: `Password has no ${assessmentType}`,
       strengthLost: 20,
     };
   }
   if (characterMatch.length <= 2) {
     return {
-      pwdCheck: "Password must have more uppercase characters",
-      strengthLost: 15,
+      pwdCheck: `Password must have more ${assessmentType}`,
+      strengthLost: 5,
     };
   }
 }
