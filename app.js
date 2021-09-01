@@ -22,9 +22,12 @@ function updateStrengther() {
 function calculatePasswordStrength(password) {
   const assessment = [];
   assessment.push(lengthAssessment(password));
+  assessment.push(lowercaseAssessment(password));
+  assessment.push(uppercaseAssessment(password));
   return assessment;
 }
 
+//length assessment function
 function lengthAssessment(password) {
   const length = password.length;
   if (length <= 5) {
@@ -37,6 +40,44 @@ function lengthAssessment(password) {
   if (length <= 10) {
     return {
       pwdCheck: "Password could be longer",
+      strengthLost: 15,
+    };
+  }
+}
+
+//lowercaseAssessment function
+function lowercaseAssessment(password) {
+  const characterMatch = password.match(/[a-z]/g) || [];
+  console.log(characterMatch);
+
+  if (characterMatch.length === 0) {
+    return {
+      pwdCheck: "Password has no lowercase characters",
+      strengthLost: 20,
+    };
+  }
+  if (characterMatch.length <= 2) {
+    return {
+      pwdCheck: "Password must have more lowercase characters",
+      strengthLost: 15,
+    };
+  }
+}
+
+//uppercaseAssessment function
+function uppercaseAssessment(password) {
+  const characterMatch = password.match(/[A-Z]/g) || [];
+  console.log(characterMatch);
+
+  if (characterMatch.length === 0) {
+    return {
+      pwdCheck: "Password has no uppercase characters",
+      strengthLost: 20,
+    };
+  }
+  if (characterMatch.length <= 2) {
+    return {
+      pwdCheck: "Password must have more uppercase characters",
       strengthLost: 15,
     };
   }
